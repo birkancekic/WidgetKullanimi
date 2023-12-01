@@ -10,7 +10,14 @@ import android.widget.Button
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
 import com.birkancekic.widgetkulanimi.databinding.ActivityMainBinding
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import java.net.BindException
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -77,7 +84,32 @@ class MainActivity : AppCompatActivity() {
             override fun onStopTrackingTouch(p0: SeekBar?) {}
             
         })
+        binding.buttonSaat.setOnClickListener {
+            val tp= MaterialTimePicker.Builder()
+                .setTitleText("Saat Sec")
+                .setTimeFormat(TimeFormat.CLOCK_24H)
+                .build()
 
+            tp.show(supportFragmentManager,"Saat")
+
+            tp.addOnPositiveButtonClickListener {
+                binding.editTextSaat.setText("${tp.hour} : ${tp.minute} ")
+            }
+        }
+
+        binding.buttonTarih.setOnClickListener {
+            val dp= MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Tarih Sec")
+                .build()
+
+            dp.show(supportFragmentManager,"Tarih")
+
+            dp.addOnPositiveButtonClickListener {
+                val df= SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val tarih= df.format(it)
+                binding.editTextTarih.setText(tarih )
+            }
+        }
 
         binding.buttonGoster.setOnClickListener {
             Log.e("Widgets","Switch Durum: ${binding.switch1.isChecked}")
